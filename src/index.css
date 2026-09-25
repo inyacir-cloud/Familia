@@ -87,7 +87,7 @@ h1, h2, h3 { font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif; }
   height: 85.6mm;
   justify-self: center;
   transform: rotateY(0deg) scale(1.65);
-  transform-origin: center;
+  transform-origin: center top;
   width: 54mm;
 }
 .credential-print-match .credential-face.credential-back { transform: rotateY(180deg) scale(1.65); }
