@@ -680,7 +680,7 @@ function CredentialBack({ card }: { card: EmergencyData }) {
   );
 }
 
-function Credential({ card }: { card: EmergencyData }) {
+function LegacyCredential({ card }: { card: EmergencyData }) {
   const contacts = orderedContacts(card).filter((c) => c.name.trim() || c.phone.trim());
   const addressLines = card.address.split("\n").map((l) => l.trim()).filter(Boolean);
   const noteLines = card.notes.split("\n").map((l) => l.trim()).filter(Boolean);
@@ -862,6 +862,33 @@ function Credential({ card }: { card: EmergencyData }) {
       </a>
         </article>
         <CredentialBack card={card} />
+      </div>
+      <button
+        type="button"
+        className="credential-flip-button"
+        aria-pressed={showBack}
+        onClick={() => setShowBack((visible) => !visible)}
+      >
+        <Icon name="refresh" size={17} />
+        {showBack ? "Ver frente" : "Ver reverso"}
+      </button>
+    </div>
+  );
+}
+
+function Credential({ card }: { card: EmergencyData }) {
+  const [showBack, setShowBack] = useState(false);
+  const qrLink = buildShareUrl({ ...card, qrPhoto: card.photo });
+
+  return (
+    <div className="credential-flip-shell credential-print-match">
+      <div className={`credential-flip ${showBack ? "is-back" : ""}`}>
+        <div className="credential-face credential-front" aria-label={`Frente de la credencial de ${card.name}`}>
+          <PhysicalFront card={card} />
+        </div>
+        <div className="credential-face credential-back" aria-label={`Reverso de la credencial de ${card.name}`}>
+          <PhysicalBack card={card} qrLink={qrLink.length <= QR_SAFE_LENGTH ? qrLink : null} />
+        </div>
       </div>
       <button
         type="button"
