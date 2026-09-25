@@ -1043,6 +1043,8 @@ function PrintSheets({ jobs }: { jobs: { card: EmergencyData; qrLink: string | n
 /* ------------------------------ helper (QR) view ----------------------------- */
 
 function HelperView({ card }: { card: EmergencyData | null }) {
+  const [isCallPanelOpen, setIsCallPanelOpen] = useState(false);
+
   useEffect(() => {
     document.title = card ? `Credencial de ayuda | ${card.name}` : "Credencial de ayuda";
   }, [card]);
@@ -1070,7 +1072,8 @@ function HelperView({ card }: { card: EmergencyData | null }) {
   }
 
   const contacts = orderedContacts(card).filter((c) => c.name.trim() || c.phone.trim());
-  const primary = contacts.find((c) => c.id === card.primaryContactId) ?? contacts[0];
+  const callableContacts = contacts.filter((contact) => callLink(contact.phone));
+  const primary = callableContacts.find((c) => c.id === card.primaryContactId) ?? callableContacts[0];
   const primaryHref = primary ? callLink(primary.phone) : null;
 
   return (
@@ -1092,22 +1095,38 @@ function HelperView({ card }: { card: EmergencyData | null }) {
         </footer>
       </div>
 
-      {primaryHref && primary && (
-        <div className="helper-sticky-call">
-          <div className="sticky-inner">
-            <div className="sticky-who">
-              <span>¿Puedes ayudar?</span>
-              <strong>
-                Llama a {primary.name || "su familia"}
-                {primary.relation.trim() ? ` (${primary.relation.trim()})` : ""}
-              </strong>
+      <div className={`helper-sticky-call ${isCallPanelOpen ? "is-open" : ""}`}>
+        {isCallPanelOpen && (
+          <div className="call-panel" aria-label="Números para llamar">
+            <div className="call-panel-head">
+              <div><span>CONTACTOS DISPONIBLES</span><strong>Toca un número para llamar</strong></div>
+              <button type="button" className="call-panel-close" onClick={() => setIsCallPanelOpen(false)} aria-label="Cerrar lista de teléfonos">×</button>
             </div>
-            <a href={primaryHref} aria-label={`Llamar ahora a ${primary.name} al ${primary.phone}`}>
-              <Icon name="phoneCall" size={20} /> Llamar
-            </a>
+            <div className="call-panel-list">
+              {callableContacts.map((contact) => (
+                <a className="call-panel-contact" href={callLink(contact.phone)} key={contact.id}>
+                  <span><strong>{contact.name || "Familiar"}</strong>{contact.relation.trim() && <small>{contact.relation.trim()}</small>}</span>
+                  <b>{contact.phone}</b>
+                  <Icon name="phoneCall" size={18} />
+                </a>
+              ))}
+              <a className="call-panel-911" href="tel:911"><span><strong>Emergencias</strong><small>Servicio de emergencia</small></span><b>911</b><Icon name="phoneCall" size={18} /></a>
+            </div>
           </div>
+        )}
+        <div className="sticky-inner">
+          <button type="button" className="sticky-summary" onClick={() => setIsCallPanelOpen((open) => !open)} aria-expanded={isCallPanelOpen}>
+            <span className="sticky-summary-icon"><Icon name="phoneCall" size={17} /></span>
+            <span className="sticky-who">
+              <span>{isCallPanelOpen ? "Ocultar teléfonos" : "¿Puedes ayudar?"}</span>
+              <strong>{primary ? `Llama a ${primary.name || "su familia"}${primary.relation.trim() ? ` (${primary.relation.trim()})` : ""}` : "Ver números para llamar"}</strong>
+            </span>
+          </button>
+          {primaryHref && primary ? (
+            <a href={primaryHref} aria-label={`Llamar ahora a ${primary.name} al ${primary.phone}`}><Icon name="phoneCall" size={20} /> Llamar</a>
+          ) : <a className="sticky-911" href="tel:911"><Icon name="phoneCall" size={20} /> 911</a>}
         </div>
-      )}
+      </div>
     </main>
   );
 }

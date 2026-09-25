@@ -756,6 +756,19 @@ a.cred-911:hover { background: var(--red-dark); transform: translateY(-1px); }
   z-index: 20;
 }
 .sticky-inner { align-items: center; display: flex; gap: 12px; margin: 0 auto; max-width: 560px; }
+.sticky-summary {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  display: flex;
+  flex: 1 1 auto;
+  gap: 10px;
+  min-width: 0;
+  padding: 0;
+  text-align: left;
+}
+.sticky-summary-icon { align-items: center; background: #e6f6ec; border-radius: 10px; color: var(--green-dark); display: inline-flex; flex: 0 0 38px; height: 38px; justify-content: center; width: 38px; }
+.sticky-summary:hover .sticky-summary-icon { background: #d0f0dc; }
 .sticky-who { flex: 1 1 auto; min-width: 0; }
 .sticky-who span { color: var(--muted); display: block; font-size: 11px; }
 .sticky-who strong {
@@ -782,6 +795,22 @@ a.cred-911:hover { background: var(--red-dark); transform: translateY(-1px); }
   text-decoration: none;
 }
 .sticky-inner a:hover { background: var(--green-dark); }
+.sticky-911 { background: var(--red) !important; }
+.call-panel { background: #fff; border: 1px solid #d7e1ee; border-radius: 16px; box-shadow: 0 14px 32px rgba(25, 51, 84, 0.14); margin: 0 auto 12px; max-width: 560px; overflow: hidden; }
+.call-panel-head { align-items: center; border-bottom: 1px solid #e6edf5; display: flex; justify-content: space-between; padding: 14px 16px; }
+.call-panel-head span { color: var(--blue); display: block; font-size: 10px; font-weight: 800; letter-spacing: .1em; }
+.call-panel-head strong { color: var(--ink); display: block; font-size: 14px; margin-top: 3px; }
+.call-panel-close { background: #f1f5f9; border: 0; border-radius: 8px; color: var(--muted); font-size: 20px; height: 32px; line-height: 1; width: 32px; }
+.call-panel-list { display: grid; gap: 8px; padding: 10px; }
+.call-panel-contact, .call-panel-911 { align-items: center; border: 1px solid #e0e8f1; border-radius: 11px; color: var(--ink); display: flex; gap: 10px; min-height: 54px; padding: 8px 11px; text-decoration: none; }
+.call-panel-contact:hover { background: #f3fbf6; border-color: #a8dcb9; }
+.call-panel-contact > span, .call-panel-911 > span { flex: 1 1 auto; min-width: 0; }
+.call-panel-contact strong, .call-panel-911 strong { display: block; font-size: 13px; }
+.call-panel-contact small, .call-panel-911 small { color: var(--muted); display: block; font-size: 11px; margin-top: 2px; }
+.call-panel-contact b, .call-panel-911 b { color: var(--blue); font-size: 15px; white-space: nowrap; }
+.call-panel-contact svg { color: var(--green-dark); }
+.call-panel-911 { background: #fff3f2; border-color: #f1c8c5; }
+.call-panel-911 b, .call-panel-911 svg { color: var(--red-dark); }
 
 .helper-error {
   background: #fff;
