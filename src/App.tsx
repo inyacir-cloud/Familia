@@ -1410,6 +1410,12 @@ function FamilyView() {
     if (selectedStatus?.canMake) window.open(selectedStatus.link, "_blank", "noopener");
   };
 
+  const printWhenReady = () => {
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => window.print());
+    });
+  };
+
   const printOne = (id: string) => {
     const target = store.cards.find((c) => c.cardId === id);
     if (!target) return;
@@ -1419,14 +1425,14 @@ function FamilyView() {
       return;
     }
     setPrintOverride([id]);
-    window.setTimeout(() => window.print(), 120);
+    printWhenReady();
   };
 
   const printAll = () => {
     if (!store.cards.length) return;
     setPrintOverride(null);
     setNotice(`Imprimiendo ${store.cards.length} ${store.cards.length === 1 ? "credencial" : "credenciales"}: 2 páginas por persona.`);
-    window.setTimeout(() => window.print(), 120);
+    printWhenReady();
   };
 
   const data = selected;
