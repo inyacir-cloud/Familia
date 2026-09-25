@@ -640,7 +640,17 @@ a.cred-911:hover { background: var(--red-dark); transform: translateY(-1px); }
 .physical-back-contact { min-width: 0; overflow: hidden; }
 .physical-back-contact small { color: #1257ac; display: block; font-size: 4.8pt; font-weight: 800; line-height: 1.12; }
 .physical-back-contact span { display: block; font-size: 5.5pt; font-weight: 700; line-height: 1.13; max-height: 4.2mm; overflow: hidden; overflow-wrap: anywhere; }
-.physical-back-contact strong { display: block; font-size: 7.7pt; line-height: 1.22; margin-top: 0.5mm; white-space: nowrap; }
+.physical-back-contact strong,
+.physical-back-contact .physical-back-phone {
+  display: block;
+  font-size: 7.7pt;
+  font-weight: 800;
+  line-height: 1.22;
+  margin-top: 0.5mm;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .physical-back-empty { color: #667488; font-size: 6.5pt; }
 .physical-back-bottom {
   border-top: 0.2mm solid #e6ebf2;
