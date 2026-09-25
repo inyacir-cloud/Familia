@@ -51,6 +51,7 @@ type IconName =
   | "phoneCall"
   | "plus"
   | "print"
+  | "refresh"
   | "search"
   | "shield"
   | "trash"
@@ -214,6 +215,13 @@ function Icon({ name, size = 20, className = "" }: { name: IconName; size?: numb
         <svg {...props}>
           <path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
           <path d="M6 15h12v6H6zM18 12h.01" />
+        </svg>
+      );
+    case "refresh":
+      return (
+        <svg {...props}>
+          <path d="M20 11a8 8 0 1 0 1 5" />
+          <path d="M20 5v6h-6" />
         </svg>
       );
     case "search":
@@ -636,13 +644,52 @@ function parseSharedCredential(encoded: string | null): { isShared: boolean; car
 
 /* --------------------------- credential (shared UI) -------------------------- */
 
+function CredentialBack({ card }: { card: EmergencyData }) {
+  const contacts = orderedContacts(card).filter((c) => c.name.trim() || c.phone.trim());
+  const addressLines = card.address.split("\n").map((line) => line.trim()).filter(Boolean);
+  const noteLines = card.notes.split("\n").map((line) => line.trim()).filter(Boolean);
+
+  return (
+    <article className="credential credential-face credential-back" aria-label={`Reverso de la credencial de ${card.name}`}>
+      <header className="cred-back-top">
+        <span className="cred-back-mark"><Icon name="shield" size={25} /></span>
+        <div><span>REVERSO DE LA CREDENCIAL</span><strong>Información para ayudar</strong></div>
+      </header>
+      <div className="cred-back-content">
+        <section className="cred-back-section">
+          <span className="cred-back-label">CONTACTOS DE EMERGENCIA</span>
+          <div className="cred-back-contact-list">
+            {contacts.length ? contacts.map((contact) => {
+              const href = callLink(contact.phone);
+              return (
+                <div className="cred-back-contact" key={contact.id}>
+                  <div><strong>{contact.name || "Familiar"}</strong>{contact.relation.trim() && <span>{contact.relation.trim()}</span>}</div>
+                  {href ? <a href={href} aria-label={`Llamar a ${contact.name || "familiar"}`}><Icon name="phoneCall" size={18} /><span>Llamar</span></a> : <span className="cred-back-missing">Sin número</span>}
+                </div>
+              );
+            }) : <p className="cred-no-contacts">No hay contactos agregados.</p>}
+          </div>
+        </section>
+        <section className="cred-back-section cred-back-details">
+          <div className="extra-row"><span className="extra-icon green"><Icon name="home" size={20} /></span><div><label>Domicilio</label><p>{addressLines.length ? addressLines.map((line, index) => <span key={index}>{line}</span>) : "—"}</p></div></div>
+          <div className="extra-row"><span className="extra-icon blue"><Icon name="info" size={20} /></span><div><label>Información importante</label>{noteLines.length ? <ul>{noteLines.map((line, index) => <li key={index}>{line}</li>)}</ul> : <p>—</p>}</div></div>
+        </section>
+      </div>
+      <a className="cred-911" href="tel:911" aria-label="En caso de emergencia, llama al 911"><span className="n911-icon"><Icon name="phoneCall" size={34} /></span><span className="n911-divider" aria-hidden="true" /><span className="n911-text"><small>EN CASO DE EMERGENCIA</small><strong>LLAMA AL 911</strong></span></a>
+    </article>
+  );
+}
+
 function Credential({ card }: { card: EmergencyData }) {
   const contacts = orderedContacts(card).filter((c) => c.name.trim() || c.phone.trim());
   const addressLines = card.address.split("\n").map((l) => l.trim()).filter(Boolean);
   const noteLines = card.notes.split("\n").map((l) => l.trim()).filter(Boolean);
+  const [showBack, setShowBack] = useState(false);
 
   return (
-    <article className="credential" aria-label={`Credencial de ayuda de ${card.name}`}>
+    <div className="credential-flip-shell">
+      <div className={`credential-flip ${showBack ? "is-back" : ""}`}>
+        <article className="credential credential-face credential-front" aria-label={`Frente de la credencial de ${card.name}`}>
       <header className="cred-top">
         <div className="cred-avatar" aria-hidden="true">
           <span className="cred-avatar-person">
@@ -813,7 +860,19 @@ function Credential({ card }: { card: EmergencyData }) {
           <strong>LLAMA AL 911</strong>
         </span>
       </a>
-    </article>
+        </article>
+        <CredentialBack card={card} />
+      </div>
+      <button
+        type="button"
+        className="credential-flip-button"
+        aria-pressed={showBack}
+        onClick={() => setShowBack((visible) => !visible)}
+      >
+        <Icon name="refresh" size={17} />
+        {showBack ? "Ver frente" : "Ver reverso"}
+      </button>
+    </div>
   );
 }
 
