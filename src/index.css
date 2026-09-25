@@ -43,7 +43,7 @@ h1, h2, h3 { font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif; }
   overflow: hidden;
 }
 
-.credential-flip-shell { display: grid; gap: 12px; }
+.credential-flip-shell { display: grid; gap: 12px; max-width: 100%; }
 .credential-flip { display: grid; perspective: 1400px; position: relative; }
 .credential-face {
   backface-visibility: hidden;
@@ -161,6 +161,32 @@ h1, h2, h3 { font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif; }
   .credential-print-match .credential-flip.is-back .credential-back { transform: rotateY(0deg) scale(1.45); }
   .credential-print-match .credential-face.credential-back { transform: rotateY(180deg) scale(1.45); }
   .credential-print-match .credential-flip.is-back .credential-front { transform: rotateY(-180deg) scale(1.45); }
+}
+
+@media (max-width: 360px) {
+  .helper-shell { padding-left: 10px; padding-right: 10px; }
+  .credential-print-match .credential-flip { height: 111.28mm; width: 70.2mm; }
+  .credential-print-match .credential-face,
+  .credential-print-match .credential-face.credential-back,
+  .credential-print-match .credential-flip.is-back .credential-front,
+  .credential-print-match .credential-flip.is-back .credential-back { transform: rotateY(0deg) scale(1.3); }
+  .credential-print-match .credential-face.credential-back { transform: rotateY(180deg) scale(1.3); }
+  .credential-print-match .credential-flip.is-back .credential-front { transform: rotateY(-180deg) scale(1.3); }
+  .credential-flip-button { font-size: 12px; min-height: 40px; padding: 0 15px; }
+  .sticky-inner { gap: 8px; }
+  .sticky-inner a { font-size: 14px; min-height: 48px; padding: 0 16px; }
+}
+
+@media (max-width: 330px) {
+  .credential-print-match .credential-flip { height: 102.72mm; width: 64.8mm; }
+  .credential-print-match .credential-face,
+  .credential-print-match .credential-face.credential-back,
+  .credential-print-match .credential-flip.is-back .credential-front,
+  .credential-print-match .credential-flip.is-back .credential-back { transform: rotateY(0deg) scale(1.2); }
+  .credential-print-match .credential-face.credential-back { transform: rotateY(180deg) scale(1.2); }
+  .credential-print-match .credential-flip.is-back .credential-front { transform: rotateY(-180deg) scale(1.2); }
+  .sticky-who strong { font-size: 12px; }
+  .sticky-inner a { padding: 0 12px; }
 }
 
 .cred-top {
