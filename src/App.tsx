@@ -1073,8 +1073,6 @@ function HelperView({ card }: { card: EmergencyData | null }) {
 
   const contacts = orderedContacts(card).filter((c) => c.name.trim() || c.phone.trim());
   const callableContacts = contacts.filter((contact) => callLink(contact.phone));
-  const primary = callableContacts.find((c) => c.id === card.primaryContactId) ?? callableContacts[0];
-  const primaryHref = primary ? callLink(primary.phone) : null;
 
   return (
     <main className="helper-shell">
@@ -1117,14 +1115,8 @@ function HelperView({ card }: { card: EmergencyData | null }) {
         <div className="sticky-inner">
           <button type="button" className="sticky-summary" onClick={() => setIsCallPanelOpen((open) => !open)} aria-expanded={isCallPanelOpen}>
             <span className="sticky-summary-icon"><Icon name="phoneCall" size={17} /></span>
-            <span className="sticky-who">
-              <span>{isCallPanelOpen ? "Ocultar teléfonos" : "¿Puedes ayudar?"}</span>
-              <strong>{primary ? `Llama a ${primary.name || "su familia"}${primary.relation.trim() ? ` (${primary.relation.trim()})` : ""}` : "Ver números para llamar"}</strong>
-            </span>
+            <span className="sticky-call-label">Llamar</span>
           </button>
-          {primaryHref && primary ? (
-            <a href={primaryHref} aria-label={`Llamar ahora a ${primary.name} al ${primary.phone}`}><Icon name="phoneCall" size={20} /> Llamar</a>
-          ) : <a className="sticky-911" href="tel:911"><Icon name="phoneCall" size={20} /> 911</a>}
         </div>
       </div>
     </main>
