@@ -77,6 +77,23 @@ h1, h2, h3 { font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif; }
 .credential-flip-button svg { transition: transform 560ms cubic-bezier(.22, .7, .2, 1); }
 .credential-flip.is-back + .credential-flip-button svg { transform: rotate(180deg); }
 
+/* The digital card keeps the printed proportions but gets a readable screen size. */
+.credential-print-match .credential-flip {
+  height: 141.24mm;
+  margin: 0 auto;
+  width: 89.1mm;
+}
+.credential-print-match .credential-face {
+  height: 85.6mm;
+  justify-self: center;
+  transform: rotateY(0deg) scale(1.65);
+  transform-origin: center;
+  width: 54mm;
+}
+.credential-print-match .credential-face.credential-back { transform: rotateY(180deg) scale(1.65); }
+.credential-print-match .credential-flip.is-back .credential-front { transform: rotateY(-180deg) scale(1.65); }
+.credential-print-match .credential-flip.is-back .credential-back { transform: rotateY(0deg) scale(1.65); }
+
 .cred-back-top {
   align-items: center;
   background: linear-gradient(135deg, #163f80 0%, var(--blue) 100%);
@@ -134,6 +151,16 @@ h1, h2, h3 { font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif; }
 
 @media (prefers-reduced-motion: reduce) {
   .credential-face, .credential-flip-button svg { transition: none; }
+}
+
+@media (max-width: 420px) {
+  .credential-print-match .credential-flip { height: 124.12mm; width: 78.3mm; }
+  .credential-print-match .credential-face,
+  .credential-print-match .credential-face.credential-back,
+  .credential-print-match .credential-flip.is-back .credential-front,
+  .credential-print-match .credential-flip.is-back .credential-back { transform: rotateY(0deg) scale(1.45); }
+  .credential-print-match .credential-face.credential-back { transform: rotateY(180deg) scale(1.45); }
+  .credential-print-match .credential-flip.is-back .credential-front { transform: rotateY(-180deg) scale(1.45); }
 }
 
 .cred-top {
