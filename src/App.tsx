@@ -943,7 +943,9 @@ function PhysicalFront({ card }: { card: EmergencyData }) {
             <div>
               <small>Contacto de emergencia</small>
               <strong>{primary?.name || "Sin contacto"}{primary?.relation ? ` (${primary.relation})` : ""}</strong>
-              <b>{primary?.phone || "Sin número"}</b>
+              {primary && callLink(primary.phone) ? (
+                <a className="physical-front-phone" href={callLink(primary.phone)}>{primary.phone}</a>
+              ) : <b>{primary?.phone || "Sin número"}</b>}
             </div>
           </div>
         </div>
@@ -982,13 +984,16 @@ function PhysicalBack({ card, qrLink }: { card: EmergencyData; qrLink: string | 
           {contacts.length > 2 && <span>+{contacts.length - 2} más en el QR</span>}
         </div>
         <div className="physical-back-contact-list">
-          {contacts.slice(0, 2).map((contact, index) => (
-            <div className="physical-back-contact" key={contact.id}>
-              <small>{index === 0 ? "Contacto principal" : "Contacto alternativo"}</small>
-              <span>{contact.name || "Familiar"}{contact.relation ? ` (${contact.relation})` : ""}</span>
-              <strong>{contact.phone || "Sin número"}</strong>
-            </div>
-          ))}
+          {contacts.slice(0, 2).map((contact, index) => {
+            const href = callLink(contact.phone);
+            return (
+              <div className="physical-back-contact" key={contact.id}>
+                <small>{index === 0 ? "Contacto principal" : "Contacto alternativo"}</small>
+                <span>{contact.name || "Familiar"}{contact.relation ? ` (${contact.relation})` : ""}</span>
+                {href ? <a className="physical-back-phone" href={href}>{contact.phone}</a> : <strong>{contact.phone || "Sin número"}</strong>}
+              </div>
+            );
+          })}
           {contacts.length === 0 && <span className="physical-back-empty">Aún no hay contactos</span>}
         </div>
       </div>

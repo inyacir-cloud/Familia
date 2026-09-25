@@ -585,6 +585,11 @@ a.cred-911:hover { background: var(--red-dark); transform: translateY(-1px); }
   margin-top: 1mm;
   white-space: nowrap;
 }
+.physical-front-phone,
+.physical-back-phone { color: inherit; text-decoration: none; }
+.physical-front-phone { display: block; font-size: 8.6pt; font-weight: 800; line-height: 1.2; margin-top: 1mm; white-space: nowrap; }
+.physical-front-phone:hover,
+.physical-back-phone:hover { text-decoration: underline; }
 .physical-front-bottom { flex: 0 0 17mm; padding: 0 2.4mm 1.4mm; }
 .physical-front-emergency {
   align-items: center;
@@ -686,6 +691,7 @@ a.cred-911:hover { background: var(--red-dark); transform: translateY(-1px); }
   padding: 8px 13px;
   text-transform: uppercase;
 }
+.helper-badge { margin-left: auto; margin-right: auto; }
 .helper-dot { animation: pulse 1.8s ease-in-out infinite; background: var(--green); border-radius: 50%; height: 9px; width: 9px; }
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
 .helper-intro { color: #3c546f; font-size: 14px; line-height: 1.55; margin: 13px 4px 16px; }
