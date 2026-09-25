@@ -1067,8 +1067,6 @@ function HelperView({ card }: { card: EmergencyData | null }) {
   const contacts = orderedContacts(card).filter((c) => c.name.trim() || c.phone.trim());
   const primary = contacts.find((c) => c.id === card.primaryContactId) ?? contacts[0];
   const primaryHref = primary ? callLink(primary.phone) : null;
-  const printableLink = buildShareUrl({ ...card, qrPhoto: card.photo });
-  const printQrLink = printableLink.length <= QR_SAFE_LENGTH ? printableLink : null;
 
   return (
     <main className="helper-shell">
@@ -1077,16 +1075,8 @@ function HelperView({ card }: { card: EmergencyData | null }) {
           <span className="helper-dot" aria-hidden="true" />
           Credencial digital · Solo lectura
         </div>
-        <p className="helper-intro">
-          Si estás con esta persona, por favor ayúdala a comunicarse con su familia. Toca cualquier
-          botón verde para llamar.
-        </p>
 
         <Credential card={card} />
-
-        <button type="button" className="helper-print" onClick={() => window.print()}>
-          <Icon name="print" size={18} /> Imprimir credencial
-        </button>
 
         <footer className="helper-footer">
           <Icon name="shield" size={16} />
@@ -1113,7 +1103,6 @@ function HelperView({ card }: { card: EmergencyData | null }) {
           </div>
         </div>
       )}
-      <PrintSheets jobs={[{ card, qrLink: printQrLink, label: card.name || "Credencial" }]} />
     </main>
   );
 }
