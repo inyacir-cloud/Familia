@@ -79,6 +79,48 @@ const initialData: EmergencyData = {
   primaryContactId: "azucena",
 };
 
+const publishedRecords: CredentialRecord[] = [
+  {
+    cardId: "a9c9df49-693d-4e08-9484-8e85f9aef2ec",
+    updatedAt: 1790315934169,
+    name: "Crescencio Sánchez Montiel",
+    age: "86 años",
+    message: initialData.message,
+    address: initialData.address,
+    notes: initialData.notes,
+    photo: "",
+    qrPhoto: "",
+    contacts: [
+      { id: "azucena", name: "Azucena Sánchez", relation: "Hija", phone: "56 6857 5221" },
+      { id: "ruben", name: "Rubén Sánchez", relation: "Hijo", phone: "5570667416" },
+      { id: "d581a194-081d-4a85-bca4-98ae5f515b5a", name: "Jonathan Gómez", relation: "Nieto", phone: "5620140923" },
+    ],
+    primaryContactId: "azucena",
+  },
+  {
+    cardId: "20d46bb3-da96-4410-9a22-f38ce10768ef",
+    updatedAt: 1790315959974,
+    name: "Nieves Angeles Hernandez",
+    age: "86 años",
+    message: initialData.message,
+    address: initialData.address,
+    notes: initialData.notes,
+    photo: "",
+    qrPhoto: "",
+    contacts: [
+      { id: "8320f544-f6ff-4aff-a66e-4a53df64b63d", name: "Azucena Sánchez", relation: "Hija", phone: "56 6857 5221" },
+      { id: "ac092b89-1bdd-4877-b4e1-3c5739ed12b7", name: "Rubén Sánchez", relation: "Hijo", phone: "5570667416" },
+      { id: "3cbfaf60-42fa-4799-9ab2-0f45dda21876", name: "Jonathan Gómez", relation: "Nieto", phone: "5620140923" },
+    ],
+    primaryContactId: "8320f544-f6ff-4aff-a66e-4a53df64b63d",
+  },
+];
+
+function mergePublishedRecords(cards: CredentialRecord[]) {
+  const names = new Set(cards.map((card) => card.name.trim().toLowerCase()));
+  return [...cards, ...publishedRecords.filter((card) => !names.has(card.name.trim().toLowerCase()))];
+}
+
 /* ---------------------------------- icons ---------------------------------- */
 
 function Icon({ name, size = 20, className = "" }: { name: IconName; size?: number; className?: string }) {
@@ -465,20 +507,20 @@ function loadStore(): { cards: CredentialRecord[]; selectedId: string | null } {
       const cards = list
         .map(sanitizeRecord)
         .filter((c): c is CredentialRecord => c !== null);
-      return { cards, selectedId: null };
+      return { cards: mergePublishedRecords(cards), selectedId: null };
     }
     const single =
       window.localStorage.getItem(STORAGE_KEY) ||
       window.localStorage.getItem("auxilio-emergency-card");
     if (single) {
       const rec = sanitizeRecord(JSON.parse(single));
-      if (rec) return { cards: [rec], selectedId: null };
+      if (rec) return { cards: mergePublishedRecords([rec]), selectedId: null };
     }
   } catch {
     /* start with the example below */
   }
   return {
-    cards: [{ ...initialData, cardId: newId(), updatedAt: Date.now() }],
+    cards: publishedRecords.map((card) => ({ ...card, contacts: card.contacts.map((contact) => ({ ...contact })) })),
     selectedId: null,
   };
 }
